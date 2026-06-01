@@ -538,7 +538,7 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="comment.html">Comment ça marche</a></li>
-      <li><a href="acheter.html" class="nav-cta active">Réserver — 29 CHF</a></li>
+      <li><a href="acheter.html" class="nav-cta active">Réserver · 29 CHF</a></li>
     </ul>
   </nav>
 
@@ -581,7 +581,7 @@
           </li>
           <li>
             <span class="offer-check"></span>
-            <span><strong style="color:var(--cream)">Application web guidée</strong> — aucune installation requise</span>
+            <span><strong style="color:var(--cream)">Application web guidée</strong>, aucune installation requise</span>
           </li>
           <li>
             <span class="offer-check"></span>
@@ -593,7 +593,7 @@
           </li>
           <li>
             <span class="offer-check"></span>
-            <span><strong style="color:var(--cream)">Méta-énigme finale</strong> — assemblez vos indices pour identifier le voleur</span>
+            <span><strong style="color:var(--cream)">Méta-énigme finale</strong>, assemblez vos indices pour identifier le voleur</span>
           </li>
           <li>
             <span class="offer-check"></span>
@@ -607,7 +607,7 @@
 
         <div class="offer-validity">
           <span style="font-size:1.2rem">📅</span>
-          <p>Code <strong>valable 12 mois</strong> dès l'achat. Activez-le quand vous le souhaitez — week-end, jours fériés, météo au choix.</p>
+          <p>Code <strong>valable 12 mois</strong> dès l'achat. Activez-le quand vous le souhaitez : week-end, jours fériés, météo au choix.</p>
         </div>
       </div>
 
@@ -666,6 +666,7 @@
             <select id="langue" class="form-input form-select" required>
               <option value="" disabled selected>Choisir une langue…</option>
               <option value="fr">🇨🇭 Français</option>
+              <option value="en">🇬🇧 English</option>
               <option value="de">🇩🇪 Deutsch</option>
             </select>
           </div>
@@ -701,7 +702,7 @@
 
         <div class="form-summary">
           <div class="form-summary-left">
-            Aventicum Quest — Operatio Aquila
+            Aventicum Quest · Operatio Aquila
             <span>1 accès groupe · Valable 12 mois</span>
           </div>
           <span class="form-summary-price">29 CHF</span>
@@ -709,7 +710,7 @@
 
         <button class="btn-pay" id="payBtn" type="button">
           <span>🔒</span>
-          Payer avec Stripe — 29 CHF
+          Payer avec Stripe · 29 CHF
         </button>
 
         <div class="payment-methods">
@@ -745,7 +746,7 @@
         <div class="reassurance-item">
           <span class="reassurance-icon">📅</span>
           <p class="reassurance-title">Valable 12 mois</p>
-          <p class="reassurance-text">Activez votre code quand vous êtes prêt — aucune date imposée.</p>
+          <p class="reassurance-text">Activez votre code quand vous êtes prêt, aucune date imposée.</p>
         </div>
         <div class="reassurance-item">
           <span class="reassurance-icon">👥</span>
@@ -799,7 +800,7 @@
         </div>
         <div style="padding:1.5rem; background:var(--cream-dark); border-left:3px solid var(--gold);">
           <p style="font-family:'Cinzel',serif; font-size:0.82rem; letter-spacing:0.05em; color:var(--dark); margin-bottom:0.5rem;">Un seul achat suffit pour tout mon groupe ?</p>
-          <p style="font-size:0.95rem; color:var(--text-light);">Absolument. Un seul code par groupe — pas besoin que chaque participant achète séparément. Le code se joue sur un téléphone partagé ou sur plusieurs appareils.</p>
+          <p style="font-size:0.95rem; color:var(--text-light);">Absolument. Un seul code par groupe, pas besoin que chaque participant achète séparément. Le code se joue sur un téléphone partagé ou plusieurs appareils.</p>
         </div>
       </div>
 
@@ -856,7 +857,6 @@
       const langue = document.getElementById('langue').value;
       const cgv = document.getElementById('cgv').checked;
 
-      // Validate
       if (!email || !prenom || !langue || !cgv) {
         formAlert.classList.add('show');
         if (!cgv) {
@@ -897,24 +897,20 @@
             'customer_email': email,
             'metadata[prenom]': prenom,
             'metadata[langue]': langue,
-            'success_url': window.location.origin + '/merci.html?session_id={CHECKOUT_SESSION_ID}',
+            'success_url': window.location.origin + '/aventicum-quest_2/merci.html?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url': window.location.href,
           })
         });
 
         const session = await response.json();
-
-        if (session.error) {
-          throw new Error(session.error.message);
-        }
-
+        if (session.error) throw new Error(session.error.message);
         await stripe.redirectToCheckout({ sessionId: session.id });
 
       } catch (err) {
         console.error(err);
         formAlert.classList.add('show');
         formAlertMsg.textContent = 'Erreur lors de la connexion à Stripe. Veuillez réessayer.';
-        payBtn.innerHTML = '<span>🔒</span> Payer avec Stripe — 29 CHF';
+        payBtn.innerHTML = '<span>🔒</span> Payer avec Stripe · 29 CHF';
         payBtn.disabled = false;
         payBtn.style.opacity = '1';
       }
